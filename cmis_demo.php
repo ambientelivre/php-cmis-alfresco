@@ -17,6 +17,7 @@
 # under the License.
 
 require_once ('cmis_repository_wrapper.php');
+require_once ('cmis_service.php');
 function list_objs($objs)
 {
     foreach ($objs->objectList as $obj)
@@ -43,11 +44,11 @@ function check_response($client)
     }
 }
 
-$repo_url = $_SERVER["argv"][1];
-$repo_username = $_SERVER["argv"][2];
-$repo_password = $_SERVER["argv"][3];
-$repo_folder = $_SERVER["argv"][4];
-$repo_new_folder = $_SERVER["argv"][5];
+$repo_url = "http://localhost:8080/alfresco/api/-default-/public/cmis/versions/1.1/atom";
+$repo_username = "admin";
+$repo_password = "sejalivre";
+$repo_folder = "/";
+$repo_new_folder = "CloudECM";
 
 $client = new CMISService($repo_url, $repo_username, $repo_password);
 print "Connected\n";
@@ -75,14 +76,20 @@ check_response($client);
 list_objs($objs);
 print "=============================================\n\n";
 
+
+
+
 $delContent = $client->getContentStream($obj_del->id);
 echo "DEL CONTENT\n";
 print $delContent . "\n";
 print "\n";
 
-echo "DELETEING " . $obj_del->properties['cmis:name'] . "\n";
-$client->deleteObject($obj_del->id);
-print "\n";
+$client->setContentStream($obj_del->id, "New Content", "text/plain");
+
+
+//echo "DELETEING " . $obj_del->properties['cmis:name'] . "\n";
+//$client->deleteObject($obj_del->id);
+//print "\n";
 
 print "FOLDER AFTER DELETE\n=============================================\n";
 $objs = $client->getChildren($my_new_folder->id);

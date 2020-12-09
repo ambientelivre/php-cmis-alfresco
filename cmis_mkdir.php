@@ -42,7 +42,7 @@ if ($repo_debug)
     print "\n===========================================\n\n";
 }
 
-$obs = $client->createFolder($myfolder->id, $repo_new_folder);
+$objs = $client->createFolder($myfolder->id, $repo_new_folder);
 if ($repo_debug)
 {
     print "Return From Create Folder\n:\n===========================================\n";
